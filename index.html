@@ -15,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             background-color: #121212; /* Dark background */
             font-family: 'Inter', sans-serif; /* Modern font */
@@ -25,88 +25,131 @@
             background: linear-gradient(135deg, #1e1e1e, #2a2a2a); /* Gradient for cooler look */
             border: 2px solid #ff9900; /* Bitcoin orange border */
             border-radius: 16px; /* Softer corners */
-            padding: 24px;
+            padding: 20px; /* Reduced padding */
             text-align: center;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 153, 0, 0.3); /* Glow effect */
-            width: 360px; /* Wider to fit side-by-side */
+            width: 100%;
+            max-width: 400px; /* Mobile screen width */
             transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions */
         }
         .widget:hover {
             transform: translateY(-4px); /* Lift on hover */
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 153, 0, 0.5); /* Enhanced glow on hover */
         }
-        .title {
-            font-family: 'Orbitron', sans-serif; /* Distinct sci-fi font for title */
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #ffffff; /* White for contrast */
-            text-decoration: underline; /* Underline as requested */
+        .stats-container {
+            display: grid;
+            grid-template-columns: 0.4fr 1.6fr; /* Left narrower for price changes, right wider for block */
+            grid-template-rows: repeat(3, auto); /* 3 rows high */
+            gap: 12px; /* Reduced space between grid items */
         }
-        .value-container {
+        .stat-item {
+            background-color: rgba(255, 153, 0, 0.05); /* Very subtle tint */
+            border-radius: 8px;
+            padding: 8px; /* Reduced padding */
+            font-size: 14px; /* Smaller base font */
+            color: #ffffff;
+            animation: fadeIn 0.5s ease-in; /* Fade-in on update */
+            min-height: 100px; /* Reduced min-height */
+            box-sizing: border-box;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px; /* Increased space before separator */
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center; /* Center content */
+            text-align: center; /* Center text */
         }
-        .value-box {
-            border: 2px solid #ff9900; /* Bitcoin orange box */
-            border-radius: 12px; /* Rounded edges */
-            padding: 8px 16px; /* Smaller padding for compact size */
-            background-color: rgba(255, 153, 0, 0.1); /* Subtle orange tint */
-            display: inline-flex;
-            align-items: center;
-            margin-right: 16px; /* Space between box and stat */
+        .stat-label {
+            font-size: 10px; /* Smaller label */
+            color: #a0a0a0;
+            margin-bottom: 2px;
         }
-        .value {
-            font-size: 52px;
+        .stat-main-value {
             font-weight: 700;
-            color: #ff9900; /* Bitcoin orange for Satoshis */
-            animation: pulse 1.5s infinite; /* Flashy pulse animation */
+            font-size: 20px; /* Slightly reduced */
+            margin-bottom: 2px;
         }
-        .sats-symbol {
-            font-size: 12px; /* As small as possible while readable */
-            color: #ff9900; /* Orange */
+        .stat-sub-label {
+            font-size: 10px;
+            color: #a0a0a0;
+            margin-bottom: 2px;
+        }
+        .stat-sub-value {
+            font-weight: 700;
+            font-size: 20px; /* Slightly reduced */
+        }
+        .sats-per-usd .stat-main-value {
+            display: flex;
+            align-items: baseline;
+            color: #ff9900;
+            animation: pulse 1.5s infinite;
+        }
+        .sats-per-usd .stat-sub-value {
+            display: flex;
+            align-items: baseline;
+            color: #00ff00; /* Green for ATL */
+        }
+        #sats-symbol, #atl-symbol {
+            font-size: 8px;
             margin-left: 4px;
-            align-self: flex-end; /* Align to bottom for superscript-like feel */
         }
-        .low-stat-container {
-            text-align: left;
+        #sats-symbol {
+            color: #ff9900;
         }
-        .low-label {
-            font-size: 16px;
-            color: #00ff00; /* Neon green like up candle */
-            display: block;
-            line-height: 1.2;
-        }
-        .low-value {
-            font-size: 16px;
+        #atl-symbol {
             color: #00ff00;
-            display: block;
-            line-height: 1.2;
         }
-        .separator {
-            border: none;
-            border-top: 1px solid #ff9900; /* Bitcoin orange line */
-            margin: 12px 0; /* Spacing around the line */
-            width: 100%; /* Full width */
+        .btc-price .stat-main-value {
+            color: #ff9900; /* Bitcoin orange */
+            font-size: 24px; /* Increased size */
         }
-        .btc-price {
-            font-size: 24px;
-            font-weight: 400;
-            color: #ffffff; /* White for BTC price */
-            animation: fadeIn 0.5s ease-in; /* Fade-in on update */
+        .btc-price .stat-sub-value {
+            color: #00ff00; /* Green as requested */
         }
-        .btc-ath {
-            font-size: 20px; /* Slightly smaller font */
-            font-weight: 400;
-            color: #a0a0a0; /* Muted gray for ATH to distinguish */
-            animation: fadeIn 0.5s ease-in; /* Fade-in on update */
+        .block-info .stat-main-value {
+            color: #ffffff;
+        }
+        .block-info .stat-sub-value {
+            color: #ffffff; /* White as requested */
+        }
+        .market-cap .stat-main-value {
+            color: #ffffff;
+        }
+        .market-cap .stat-sub-value {
+            font-size: 16px; /* Shrunk to fit in one row */
+            color: #ffffff; /* White as requested */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow if needed */
+            text-overflow: ellipsis; /* Ellipsis if too long */
+        }
+        .btc-dominance .stat-main-value {
+            font-weight: 700;
+            font-size: 20px;
+        }
+        .btc-dominance .stat-sub-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .price-change .changes-column {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .price-change .change-item {
+            text-align: center;
+        }
+        .price-change .change-label {
+            font-size: 10px;
+            color: #a0a0a0;
+            margin-bottom: 2px;
+        }
+        .price-change .change-value {
+            font-size: 16px;
+            font-weight: 700;
         }
         .subtitle {
-            font-size: 14px;
+            font-size: 12px;
             color: #a0a0a0; /* Muted gray */
             margin-top: 12px;
+            text-align: center;
         }
         .loading {
             font-style: italic;
@@ -125,40 +168,140 @@
 </head>
 <body>
     <div class="widget">
-        <div class="title">Satoshi’s per $1 USD</div>
-        <div class="value-container">
-            <div class="value-box">
-                <span id="sats-value" class="value loading">Loading...</span>
-                <span id="sats-symbol" class="sats-symbol"></span>
+        <div class="stats-container">
+            <div id="sats-per-usd" class="stat-item sats-per-usd">
+                <div class="stat-label">Sats per $1</div>
+                <div class="stat-main-value">
+                    <span id="sats-value" class="loading">Loading...</span>
+                    <span id="sats-symbol"></span>
+                </div>
+                <div class="stat-sub-label">All time low:</div>
+                <div class="stat-sub-value">
+                    <span id="atl-value">Loading...</span>
+                    <span id="atl-symbol">sats</span>
+                </div>
             </div>
-            <div class="low-stat-container">
-                <span class="low-label">All time low:</span>
-                <span id="low-value" class="low-value">Loading...</span>
+            <div id="btc-price" class="stat-item btc-price">
+                <div class="stat-label">BTC Price</div>
+                <div class="stat-main-value" id="btc-price-value">Loading...</div>
+                <div class="stat-sub-label">All time high:</div>
+                <div class="stat-sub-value" id="ath-value">Loading...</div>
+            </div>
+            <div id="price-change" class="stat-item price-change">
+                <div class="stat-label">Price Changes</div>
+                <div class="changes-column">
+                    <div class="change-item">
+                        <div class="change-label">24h</div>
+                        <div class="change-value" id="chg-24h">Loading...</div>
+                    </div>
+                    <div class="change-item">
+                        <div class="change-label">6m</div>
+                        <div class="change-value" id="chg-6m">Loading...</div>
+                    </div>
+                    <div class="change-item">
+                        <div class="change-label">1y</div>
+                        <div class="change-value" id="chg-1y">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            <div id="block-info" class="stat-item block-info">
+                <div class="stat-label">Current BTC block:</div>
+                <div class="stat-main-value" id="block-number">Loading...</div>
+                <div class="stat-sub-label">Hash Rate:</div>
+                <div class="stat-sub-value" id="hash-rate">Loading...</div>
+                <div class="stat-sub-label">Halving est. date:</div>
+                <div class="stat-sub-value" id="halving-est">Loading...</div>
+            </div>
+            <div id="btc-dominance" class="stat-item btc-dominance">
+                <div class="stat-label">BTC Dominance</div>
+                <div class="stat-main-value" id="dominance-value">Loading...</div>
+                <div class="stat-sub-label">Fear & Greed</div>
+                <div class="stat-sub-value" id="fng-value">Loading...</div>
+            </div>
+            <div id="market-cap" class="stat-item market-cap">
+                <div class="stat-label">Market Cap</div>
+                <div class="stat-main-value" id="market-cap-value">Loading...</div>
+                <div class="stat-sub-label">24h Vol.</div>
+                <div class="stat-sub-value" id="volume-value">Loading...</div>
+                <div class="stat-sub-label">Circ. BTC Supply</div>
+                <div class="stat-sub-value" id="circ-supply-value">Loading...</div>
             </div>
         </div>
-        <hr class="separator">
-        <div id="btc-price" class="btc-price">BTC Price: Loading...</div>
-        <div id="btc-ath" class="btc-ath">BTC ATH: Loading...</div>
-        <div class="subtitle">Live update via CoinGecko API</div>
+        <div class="subtitle">Live update via CoinGecko & Mempool APIs</div>
     </div>
 
     <script>
         const satsDisplay = document.getElementById('sats-value');
         const symbolDisplay = document.getElementById('sats-symbol');
-        const lowValueDisplay = document.getElementById('low-value');
-        const btcDisplay = document.getElementById('btc-price');
-        const athDisplay = document.getElementById('btc-ath');
+        const atlValue = document.getElementById('atl-value');
+        const atlSymbol = document.getElementById('atl-symbol');
+        const blockNumber = document.getElementById('block-number');
+        const hashRateDisplay = document.getElementById('hash-rate');
+        const halvingEstDisplay = document.getElementById('halving-est');
+        const btcPriceValue = document.getElementById('btc-price-value');
+        const athValue = document.getElementById('ath-value');
+        const chg24h = document.getElementById('chg-24h');
+        const chg6m = document.getElementById('chg-6m');
+        const chg1y = document.getElementById('chg-1y');
+        const dominanceValue = document.getElementById('dominance-value');
+        const fngValue = document.getElementById('fng-value');
+        const marketCapValue = document.getElementById('market-cap-value');
+        const volumeValue = document.getElementById('volume-value');
+        const circSupplyValue = document.getElementById('circ-supply-value');
+
+        const apiKey = 'CG-gq9K5DZzDgkbhbgqZZAv4adL';
 
         // Retrieve from localStorage or start at historical low
         let minSats = localStorage.getItem('minSatsPerUsd') ? parseInt(localStorage.getItem('minSatsPerUsd')) : Infinity;
 
+        function formatNumber(num) {
+            if (num >= 1e12) return '$' + (num / 1e12).toFixed(1) + 'T';
+            if (num >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+            if (num >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+            return '$' + num.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        }
+
+        function colorChange(element, value) {
+            element.style.color = value > 0 ? '#00ff00' : '#ff0000';
+        }
+
         async function updateSats() {
             try {
-                const response = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false');
-                if (!response.ok) throw new Error('API request failed');
+                const response = await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false&x_cg_demo_api_key=${apiKey}`);
+                if (!response.ok) throw new Error('Bitcoin API request failed');
                 const data = await response.json();
+                const globalResponse = await fetch(`https://api.coingecko.com/api/v3/global?x_cg_demo_api_key=${apiKey}`);
+                if (!globalResponse.ok) throw new Error('Global API request failed');
+                const globalData = await globalResponse.json();
+                const heightResponse = await fetch('https://mempool.space/api/blocks/tip/height');
+                if (!heightResponse.ok) throw new Error('Block height API failed');
+                const currentHeight = parseInt(await heightResponse.text());
+
+                const hashResponse = await fetch('https://mempool.space/api/v1/mining/hashrate/3d');
+                if (!hashResponse.ok) throw new Error('Hash rate API failed');
+                const hashData = await hashResponse.json();
+                const hashRate = (hashData.hashrates[hashData.hashrates.length - 1].avgHashrate / 1e18).toFixed(0) + ' EH/s';
+
+                // Calculate 6 months ago
+                const sixMonthsAgo = new Date();
+                sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+                const day = String(sixMonthsAgo.getDate()).padStart(2, '0');
+                const month = String(sixMonthsAgo.getMonth() + 1).padStart(2, '0');
+                const year = sixMonthsAgo.getFullYear();
+                const dateStr = `${day}-${month}-${year}`;
+                const histResponse = await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/history?date=${dateStr}&x_cg_demo_api_key=${apiKey}`);
+                if (!histResponse.ok) throw new Error('Historical API failed');
+                const histData = await histResponse.json();
+
+                const fngResponse = await fetch('https://api.alternative.me/fng/?limit=1');
+                if (!fngResponse.ok) throw new Error('FNG API failed');
+                const fngData = await fngResponse.json();
+                const fngVal = fngData.data[0].value;
+                const fngClass = fngData.data[0].value_classification;
+
                 const price = data.market_data.current_price.usd;
                 const athPrice = data.market_data.ath.usd;
+                const histPrice = histData.market_data.current_price.usd;
 
                 if (price > 0) {
                     const satsPerUsd = Math.round(100000000 / price);
@@ -169,32 +312,85 @@
                     // Update all-time low Sats (from current or ATH)
                     const athSats = Math.round(100000000 / athPrice);
                     minSats = Math.min(minSats, satsPerUsd, athSats);
-                    lowValueDisplay.textContent = `${minSats.toLocaleString()} sats/$1`;
+                    atlValue.textContent = minSats.toLocaleString();
+                    atlSymbol.textContent = 'sats';
                     localStorage.setItem('minSatsPerUsd', minSats);
 
-                    btcDisplay.textContent = `BTC Price: $${price.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
-                    athDisplay.textContent = `BTC ATH: $${athPrice.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+                    btcPriceValue.textContent = formatNumber(price);
+                    athValue.textContent = `$${athPrice.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
 
-                    // Trigger fade-in animations
-                    btcDisplay.style.animation = 'none';
-                    btcDisplay.offsetHeight;
-                    btcDisplay.style.animation = 'fadeIn 0.5s ease-in';
+                    chg24h.textContent = `${data.market_data.price_change_percentage_24h.toFixed(1)}%`;
+                    colorChange(chg24h, data.market_data.price_change_percentage_24h);
 
-                    athDisplay.style.animation = 'none';
-                    athDisplay.offsetHeight;
-                    athDisplay.style.animation = 'fadeIn 0.5s ease-in';
+                    const chg6mVal = ((price - histPrice) / histPrice * 100);
+                    chg6m.textContent = `${chg6mVal.toFixed(1)}%`;
+                    colorChange(chg6m, chg6mVal);
+
+                    chg1y.textContent = `${data.market_data.price_change_percentage_1y.toFixed(1)}%`;
+                    colorChange(chg1y, data.market_data.price_change_percentage_1y);
+
+                    const btcCap = data.market_data.market_cap.usd;
+                    const totalCap = globalData.data.total_market_cap.usd;
+                    const dominance = (btcCap / totalCap * 100).toFixed(1);
+                    dominanceValue.textContent = `${dominance}%`;
+
+                    fngValue.textContent = fngVal;
+                    if (fngClass.includes('Fear')) {
+                        fngValue.style.color = '#ff0000'; // red
+                    } else if (fngClass.includes('Greed')) {
+                        fngValue.style.color = '#00ff00'; // green
+                    } else if (fngClass.includes('Neutral')) {
+                        fngValue.style.color = '#ffff00'; // yellow
+                    }
+
+                    marketCapValue.textContent = formatNumber(btcCap);
+
+                    const volume = data.market_data.total_volume.usd;
+                    volumeValue.textContent = formatNumber(volume);
+
+                    const circulating = Math.round(data.market_data.circulating_supply);
+                    circSupplyValue.textContent = `${circulating.toLocaleString()} / 21M`;
+
+                    const nextHalvingBlock = 1050000;
+                    const blocksLeft = nextHalvingBlock - currentHeight;
+                    const avgBlockTimeMs = 10 * 60 * 1000; // 10 minutes
+                    const estimatedMs = blocksLeft * avgBlockTimeMs;
+                    const estimatedDate = new Date(Date.now() + estimatedMs);
+                    const halvingEst = estimatedDate.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+                    blockNumber.textContent = currentHeight.toLocaleString();
+                    hashRateDisplay.textContent = hashRate;
+                    halvingEstDisplay.textContent = halvingEst;
+
+                    // Trigger fade-in animations for stats
+                    document.querySelectorAll('.stat-item').forEach(item => {
+                        item.style.animation = 'none';
+                        item.offsetHeight;
+                        item.style.animation = 'fadeIn 0.5s ease-in';
+                    });
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                satsDisplay.textContent = 'Error loading - Retrying...';
+                satsDisplay.textContent = 'Error';
                 symbolDisplay.textContent = '';
-                btcDisplay.textContent = 'BTC Price: Error';
-                athDisplay.textContent = 'BTC ATH: Error';
+                atlValue.textContent = '';
+                blockNumber.textContent = 'Error';
+                hashRateDisplay.textContent = 'Error';
+                halvingEstDisplay.textContent = 'Error';
+                btcPriceValue.textContent = 'Error';
+                athValue.textContent = 'Error';
+                chg24h.textContent = 'Error';
+                chg6m.textContent = 'Error';
+                chg1y.textContent = 'Error';
+                dominanceValue.textContent = 'Error';
+                fngValue.textContent = 'Error';
+                marketCapValue.textContent = 'Error';
+                volumeValue.textContent = 'Error';
+                circSupplyValue.textContent = 'Error';
             }
         }
 
         updateSats(); // Initial load
-        setInterval(updateSats, 10000); // Update every 10 seconds to be safe
+        setInterval(updateSats, 30000); // Update every 30 seconds to avoid rate limits
     </script>
 </body>
 </html>
