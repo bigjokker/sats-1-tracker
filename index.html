@@ -122,17 +122,42 @@
         }
         .btc-dominance .stat-main-value {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 20px;
         }
         .btc-dominance .stat-sub-value {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
         }
-        .btc-dominance .stat-label {
-            font-size: 14px; /* Increased from global 10px */
+        .btc-dominance {
+            position: relative; /* Make relative to contain absolute positioned child */
         }
-        .btc-dominance .stat-sub-label {
-            font-size: 14px; /* Increased from global 10px */
+        .btc-logos-container { /* NEW: Container for multiple logos at bottom */
+            position: absolute;
+            bottom: 8px; /* Align to bottom with padding offset */
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between logos */
+        }
+        .animated-bitcoin { /* Styles for each spinning Bitcoin */
+            font-size: 16px; /* Smaller size to fit three side by side */
+            color: #ff9900; /* Bitcoin orange */
+        }
+        .spin-clockwise {
+            animation: spin-clockwise 3s linear infinite; /* Clockwise, normal speed */
+        }
+        .spin-counter {
+            animation: spin-counter 4s linear infinite; /* Counter-clockwise, slightly slower */
+        }
+        .spin-fast {
+            animation: spin-clockwise 2s linear infinite; /* Clockwise, faster */
+        }
+        @keyframes spin-clockwise { /* Clockwise rotation */
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes spin-counter { /* Counter-clockwise rotation */
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
         }
         .price-change .changes-column {
             display: flex;
@@ -223,6 +248,11 @@
                 <div class="stat-main-value" id="dominance-value">Loading...</div>
                 <div class="stat-sub-label">Fear & Greed</div>
                 <div class="stat-sub-value" id="fng-value">Loading...</div>
+                <div class="btc-logos-container"> <!-- NEW: Container for three logos -->
+                    <div class="animated-bitcoin spin-clockwise">₿</div>
+                    <div class="animated-bitcoin spin-counter">₿</div>
+                    <div class="animated-bitcoin spin-fast">₿</div>
+                </div>
             </div>
             <div id="market-cap" class="stat-item market-cap">
                 <div class="stat-label">Market Cap</div>
@@ -396,7 +426,7 @@
         }
 
         updateSats(); // Initial load
-        setInterval(updateSats, 30000); // Update every 30 seconds to avoid rate limits
+        setInterval(updateSats, 60000); // Update every 60 seconds to avoid rate limits
     </script>
 </body>
 </html>
