@@ -69,8 +69,23 @@
             justify-content: center;
             align-items: flex-start;
             padding-top: 20px;
-            overflow-y: auto; /* Allow vertical scroll when needed */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            overflow-y: auto; /* ← Let body scroll when keyboard pushes viewport */
+            -webkit-overflow-scrolling: touch; /* ← Smooth scrolling on iOS */
+        }
+
+        .viewport-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+            background-color: var(--bg-color);
+                                                                            
                                                                      
                         
                           
@@ -238,26 +253,37 @@
     </style>
 </head>
 <body>
-                                
-    <div class="converter-widget">
-        <h2>USD to Sat/BTC Converter</h2>
-        <div class="converter-form">
-            <div class="input-group">
-                <img src="dollar.png" alt="Dollar"> <!-- Replace with your dollar image path -->
-                <label for="usd-input">USD:</label>
-                <input type="number" id="usd-input" placeholder="Enter USD">
+    <div class="viewport-wrapper">
+        <div class="converter-widget">
+            <h2>USD to Sat/BTC Converter</h2>
+            <div class="converter-form">
+                <div class="input-group">
+                    <img src="dollar.png" alt="Dollar"> <!-- Replace with your dollar image path -->
+                    <label for="usd-input">USD:</label>
+                    <input type="number" id="usd-input" placeholder="Enter USD">
+                </div>
+                <div class="input-group">
+                    <img src="lightning.png" alt="Lightning"> <!-- Replace with your lightning image path -->
+                    <label for="sats-input">Satoshis:</label>
+                    <input type="number" id="sats-input" placeholder="Enter Satoshis">
+                </div>
+                <div class="input-group">
+                    <img src="bitcoin.png" alt="Bitcoin"> <!-- Replace with your bitcoin image path -->
+                    <label for="btc-input">Bitcoin (BTC):</label>
+                    <input type="number" id="btc-input" placeholder="Enter BTC">
+                </div>
             </div>
-            <div class="input-group">
-                <img src="lightning.png" alt="Lightning"> <!-- Replace with your lightning image path -->
-                <label for="sats-input">Satoshis:</label>
-                <input type="number" id="sats-input" placeholder="Enter Satoshis">
-            </div>
-            <div class="input-group">
-                <img src="bitcoin.png" alt="Bitcoin"> <!-- Replace with your bitcoin image path -->
-                <label for="btc-input">Bitcoin (BTC):</label>
-                <input type="number" id="btc-input" placeholder="Enter BTC">
+            <div class="subtitle">Live BTC price from CoinGecko API</div>
+            <button id="theme-toggle" class="theme-button">
+                <img id="theme-icon" src="./Moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
+            </button>
+            <button class="close-button" onclick="window.close()">X</button>
+                                     
+                                                                                                   
+                                                             
+                                                                            
                       
-            </div>
+                  
                                                                          
                                                            
                                                                                                         
@@ -269,11 +295,11 @@
                                                                             
                   
         </div>
-        <div class="subtitle">Live BTC price from CoinGecko API</div>
-        <button id="theme-toggle" class="theme-button">
-            <img id="theme-icon" src="./Moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
-        </button>
-        <button class="close-button" onclick="window.close()">X</button>
+                                                                     
+                                                       
+                                                                                                    
+                 
+                                                                        
     </div>
 
     <script>
@@ -353,12 +379,25 @@
             }
         });
 
-        // iOS Safari input scroll workaround
+        // Prevent scroll on focus (iOS workaround)
         document.querySelectorAll('input').forEach(input => {
             input.addEventListener('focus', () => {
+                // Lock body scroll
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${window.scrollY}px`;
+
+                // Optional: center input if needed
                 setTimeout(() => {
-                    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    input.scrollIntoView({ block: 'center', behavior: 'instant' });
                 }, 300);
+            });
+
+            input.addEventListener('blur', () => {
+                // Restore scroll
+                const scrollY = document.body.style.top;
+                document.body.style.position = '';
+                document.body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
             });
         });
                                               
