@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- Locks scaling to prevent zoom/scale issues on iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> <!-- Updated per suggestion to handle iOS safe areas -->
     <title>Satoshi Converter</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -41,40 +41,46 @@
         }
 
         html {
-            height: 100vh; /* Lock to viewport height */
-            overflow: hidden; /* Prevent scrolling at root */
-            touch-action: none; /* Helps prevent default gestures */
-            position: relative; /* Needed to position fixed/absolute inside */
-            margin: 0;
-            padding: 0;
+            height: 100%; /* Changed per suggestion */
+                                                             
+                                                                    
+                                                                              
+                      
+                       
         }
 
         body {
-            height: 100vh; /* Lock to viewport height */
-            overflow: hidden; /* Disable all scrolling */
+            width: 100%;
+            min-height: 100vh; /* Changed to min-height per suggestion */
+                                                         
                                                                                             
                               
             margin: 0;
-                                                         
+            padding: 0;
             background-color: var(--bg-color);
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
-         
-
-              
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align to top */
-            padding-top: 20px; /* Space from top */
-            position: fixed; /* Lock body position to prevent any shift */
-            width: 100%; /* Full width */
-            top: 0; /* Pin to top */
-            left: 0;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+
+        .scroll-wrapper { /* Added optional wrapper per suggestion */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+                                                       
+            padding: 20px 0;
+                                                                          
+                                         
+                                    
+                    
         }
 
         .converter-widget {
-            position: absolute; /* Changed to absolute for better control within body */
-            top: 20px; /* Space from top; adjust if needed */
+            position: relative;
+                                                             
                       
                                                                                       
             background: linear-gradient(135deg, var(--widget-bg-start), var(--widget-bg-end));
@@ -227,30 +233,42 @@
     </style>
 </head>
 <body>
-    <div class="converter-widget">
-        <h2>USD to Sat/BTC Converter</h2>
-        <div class="converter-form">
-            <div class="input-group">
-                <img src="dollar.png" alt="Dollar"> <!-- Replace with your dollar image path -->
-                <label for="usd-input">USD:</label>
-                <input type="number" id="usd-input" placeholder="Enter USD">
+    <div class="scroll-wrapper">
+        <div class="converter-widget">
+            <h2>USD to Sat/BTC Converter</h2>
+            <div class="converter-form">
+                <div class="input-group">
+                    <img src="dollar.png" alt="Dollar"> <!-- Replace with your dollar image path -->
+                    <label for="usd-input">USD:</label>
+                    <input type="number" id="usd-input" placeholder="Enter USD">
+                </div>
+                <div class="input-group">
+                    <img src="lightning.png" alt="Lightning"> <!-- Replace with your lightning image path -->
+                    <label for="sats-input">Satoshis:</label>
+                    <input type="number" id="sats-input" placeholder="Enter Satoshis">
+                </div>
+                <div class="input-group">
+                    <img src="bitcoin.png" alt="Bitcoin"> <!-- Replace with your bitcoin image path -->
+                    <label for="btc-input">Bitcoin (BTC):</label>
+                    <input type="number" id="btc-input" placeholder="Enter BTC">
+                </div>
             </div>
-            <div class="input-group">
-                <img src="lightning.png" alt="Lightning"> <!-- Replace with your lightning image path -->
-                <label for="sats-input">Satoshis:</label>
-                <input type="number" id="sats-input" placeholder="Enter Satoshis">
-            </div>
-            <div class="input-group">
-                <img src="bitcoin.png" alt="Bitcoin"> <!-- Replace with your bitcoin image path -->
-                <label for="btc-input">Bitcoin (BTC):</label>
-                <input type="number" id="btc-input" placeholder="Enter BTC">
-            </div>
+            <div class="subtitle">Live BTC price from CoinGecko API</div>
+            <button id="theme-toggle" class="theme-button">
+                <img id="theme-icon" src="./Moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
+            </button>
+            <button class="close-button" onclick="window.close()">X</button>
+                                     
+                                                                                                   
+                                                             
+                                                                            
+                  
         </div>
-        <div class="subtitle">Live BTC price from CoinGecko API</div>
-        <button id="theme-toggle" class="theme-button">
-            <img id="theme-icon" src="./Moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
-        </button>
-        <button class="close-button" onclick="window.close()">X</button>
+                                                                     
+                                                       
+                                                                                                    
+                 
+                                                                        
     </div>
 
     <script>
