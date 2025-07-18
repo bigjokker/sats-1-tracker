@@ -269,18 +269,18 @@
         const savedTheme = localStorage.getItem('theme') || 'dark';
         if (savedTheme === 'light') {
             body.classList.add('light-mode');
-            themeIcon.src = 'sun.png';
+            themeIcon.src = 'Sun.png';
         } else {
-            themeIcon.src = 'moon.png';
+            themeIcon.src = 'Moon.png';
         }
 
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             if (body.classList.contains('light-mode')) {
-                themeIcon.src = 'sun.png';
+                themeIcon.src = './Sun.png';
                 localStorage.setItem('theme', 'light');
             } else {
-                themeIcon.src = 'moon.png';
+                themeIcon.src = './Moon.png';
                 localStorage.setItem('theme', 'dark');
             }
         });
