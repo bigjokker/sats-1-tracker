@@ -64,15 +64,15 @@
               
             display: flex;
             justify-content: center;
-            align-items: center;
-                                                   
+            align-items: flex-start; /* Align to top */
+            padding-top: 20px; /* Space from top */
         }
 
         .converter-widget {
-            position: fixed; /* Fix to viewport to prevent shift */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* Center horizontally and vertically */
+            position: absolute; /* Changed to absolute for better control within body */
+            top: 20px; /* Space from top; adjust if needed */
+                      
+                                                                                      
             background: linear-gradient(135deg, var(--widget-bg-start), var(--widget-bg-end));
             border: 2px solid var(--border-color);
             border-radius: 16px;
@@ -81,14 +81,14 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 153, 0, 0.3);
             width: 100%;
             max-width: 400px;
-            max-height: 95vh; /* Ensure it fits within visible screen */
-            overflow: auto; /* Inner scroll if content overflows (though unlikely here) */
+                                                                        
+                                                                                          
             box-sizing: border-box; /* Ensures padding doesn't add to width */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .converter-widget:hover {
-            transform: translate(-50%, -50%) translateY(-4px); /* Adjust for fixed positioning */
+            transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 153, 0, 0.5);
         }
 
@@ -326,16 +326,16 @@
             }
         });
 
-        // Optional JS patch for iOS keyboard focus
-        window.addEventListener('focusin', () => {
-            // Prevent scrolling when keyboard appears
-            document.body.style.position = 'fixed';
-        });
+                                                   
+                                                  
+                                                      
+                                                   
+           
 
-        window.addEventListener('focusout', () => {
-            // Restore after keyboard hides
-            document.body.style.position = '';
-        });
+                                                   
+                                           
+                                              
+           
     </script>
 </body>
 </html>
