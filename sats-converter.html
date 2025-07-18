@@ -269,9 +269,9 @@
         const savedTheme = localStorage.getItem('theme') || 'dark';
         if (savedTheme === 'light') {
             body.classList.add('light-mode');
-            themeIcon.src = 'Sun.png';
+            themeIcon.src = './Sun.png';
         } else {
-            themeIcon.src = 'Moon.png';
+            themeIcon.src = './Moon.png';
         }
 
         themeToggle.addEventListener('click', () => {
