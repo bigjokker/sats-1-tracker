@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin  Stats</title>
-    <meta property="og:title" content="Bitcoin  Stats">
+    <title>Bitcoin Stats</title>
+    <meta property="og:title" content="Bitcoin Stats">
     <meta property="og:description" content="Real-time BTC Statistics. #Bitcoin #StackingSats">
     <meta property="og:image" content="https://raw.githubusercontent.com/bigjokker/sats-1-tracker/refs/heads/main/Sats-tracker.png"> <!-- Replace with your actual screenshot URL after uploading to repo -->
     <meta property="og:url" content="https://bigjokker.github.io/sats-1-tracker/"> <!-- Replace with your GitHub Pages URL -->
@@ -12,19 +12,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <style>
+        :root {
+            --bg-color: #121212; /* Dark default */
+            --text-color: #e0e0e0;
+            --widget-bg-start: #1e1e1e;
+            --widget-bg-end: #2a2a2a;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.05);
+            --label-color: #a0a0a0;
+            --subtitle-color: #a0a0a0;
+            --main-text-color: #ffffff; /* New variable for main values that were white */
+            --sub-text-color: #ffffff; /* For sub values */
+            --positive-color: #00ff00; /* Bright green for dark mode */
+            --negative-color: #ff0000; /* Red */
+            --neutral-color: #ffff00; /* Yellow */
+            --hover-tint: rgba(255, 153, 0, 0.1); /* Orange tint for dark mode */
+        }
+
+        .light-mode {
+            --bg-color: #ffffff; /* Light theme */
+            --text-color: #121212;
+            --widget-bg-start: #f0f0f0;
+            --widget-bg-end: #ffffff;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.1);
+            --label-color: #606060;
+            --subtitle-color: #606060;
+            --main-text-color: #ff9900; /* Bitcoin orange for better visibility */
+            --sub-text-color: #ff9900; /* Bitcoin orange for sub values */
+            --positive-color: #008000; /* Dark green for light mode */
+            --negative-color: #ff0000; /* Keep red the same, or darken if needed */
+            --neutral-color: #cccc00; /* Slightly darker yellow if needed */
+            --hover-tint: rgba(255, 255, 0, 0.1); /* Light yellow tint for light mode */
+        }
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #121212; /* Dark background */
+            background-color: var(--bg-color); /* Dark background */
             font-family: 'Inter', sans-serif; /* Modern font */
-            color: #e0e0e0; /* Light text for dark mode */
+            color: var(--text-color); /* Light text for dark mode */
         }
         .widget {
-            background: linear-gradient(135deg, #1e1e1e, #2a2a2a); /* Gradient for cooler look */
-            border: 2px solid #ff9900; /* Bitcoin orange border */
+            position: relative; /* Add this to make absolute children position relative to widget */
+            background: linear-gradient(135deg, var(--widget-bg-start), var(--widget-bg-end)); /* Gradient for cooler look */
+            border: 2px solid var(--border-color); /* Bitcoin orange border */
             border-radius: 16px; /* Softer corners */
             padding: 20px; /* Reduced padding */
             text-align: center;
@@ -44,11 +79,11 @@
             gap: 12px; /* Reduced space between grid items */
         }
         .stat-item {
-            background-color: rgba(255, 153, 0, 0.05); /* Very subtle tint */
+            background-color: var(--stat-bg); /* Very subtle tint */
             border-radius: 8px;
             padding: 8px; /* Reduced padding */
             font-size: 14px; /* Smaller base font */
-            color: #ffffff;
+            color: var(--main-text-color);
             animation: fadeIn 0.5s ease-in; /* Fade-in on update */
             min-height: 100px; /* Reduced min-height */
             box-sizing: border-box;
@@ -57,10 +92,15 @@
             justify-content: flex-start;
             align-items: center; /* Center content */
             text-align: center; /* Center text */
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .stat-item:hover {
+            background-color: var(--hover-tint);
         }
         .stat-label {
             font-size: 10px; /* Smaller label */
-            color: #a0a0a0;
+            color: var(--label-color);
             margin-bottom: 2px;
         }
         .stat-main-value {
@@ -70,7 +110,7 @@
         }
         .stat-sub-label {
             font-size: 10px;
-            color: #a0a0a0;
+            color: var(--label-color);
             margin-bottom: 2px;
         }
         .stat-sub-value {
@@ -88,7 +128,7 @@
             display: flex;
             align-items: baseline;
             font-size: 22px; /* temp */
-            color: #00ff00; /* Green for ATL */
+            color: var(--positive-color); /* Green for ATL */
         }
         #sats-symbol, #atl-symbol {
             font-size: 10px;
@@ -98,7 +138,7 @@
             color: #ff9900;
         }
         #atl-symbol {
-            color: #00ff00;
+            color: var(--positive-color);
         }
         .btc-price .stat-main-value {
             color: #ff9900; /* Bitcoin orange */
@@ -107,22 +147,22 @@
         }
         .btc-price .stat-sub-value {
             font-size: 22px; /* temp */
-            color: #00ff00; /* Green as requested */
+            color: var(--positive-color); /* Green as requested */
         }
         .block-info .stat-main-value {
             font-size: 22px; /* temp */
-            color: #ffffff;
+            color: var(--main-text-color);
         }
         .block-info .stat-sub-value {
             font-size: 22px; /* temp */
-            color: #ffffff; /* White as requested */
+            color: var(--main-text-color); /* White as requested */
         }
         .market-cap .stat-main-value {
-            color: #ffffff;
+            color: var(--main-text-color);
         }
         .market-cap .stat-sub-value {
             font-size: 16px; /* Shrunk to fit in one row */
-            color: #ffffff; /* White as requested */
+            color: var(--main-text-color); /* White as requested */
             white-space: nowrap; /* Prevent wrapping */
             overflow: hidden; /* Hide overflow if needed */
             text-overflow: ellipsis; /* Ellipsis if too long */
@@ -176,7 +216,7 @@
         }
         .price-change .change-label {
             font-size: 10px;
-            color: #a0a0a0;
+            color: var(--label-color);
             margin-bottom: 2px;
         }
         .price-change .change-value {
@@ -185,7 +225,7 @@
         }
         .subtitle {
             font-size: 12px;
-            color: #a0a0a0; /* Muted gray */
+            color: var(--subtitle-color); /* Muted gray */
             margin-top: 12px;
             text-align: center;
         }
@@ -201,6 +241,56 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        /* Button styles - small, absolute position, no layout impact */
+        .theme-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            opacity: 1; /* Always fully visible */
+            z-index: 10; /* Ensures it's on top */
+        }
+
+        .theme-button:hover {
+            opacity: 0.8; /* Optional: Slight fade on hover for feedback, or remove this */
+        }
+
+        .theme-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Help button styles */
+        .help-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .help-button:hover {
+            opacity: 0.8;
+        }
+
+        .help-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -271,6 +361,12 @@
             </div>
         </div>
         <div class="subtitle">Live update via CoinGecko & Mempool APIs</div>
+        <button id="theme-toggle" class="theme-button">
+            <img id="theme-icon" src="moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
+        </button>
+        <button id="help-button" class="help-button">
+            <img src="help.png" alt="Help">
+        </button>
     </div>
 
     <script>
@@ -305,7 +401,7 @@
         }
 
         function colorChange(element, value) {
-            element.style.color = value > 0 ? '#00ff00' : '#ff0000';
+            element.style.color = value > 0 ? 'var(--positive-color)' : 'var(--negative-color)';
         }
 
         async function updateSats() {
@@ -379,11 +475,11 @@
 
                     fngValue.textContent = fngVal;
                     if (fngClass.includes('Fear')) {
-                        fngValue.style.color = '#ff0000'; // red
+                        fngValue.style.color = 'var(--negative-color)'; // red
                     } else if (fngClass.includes('Greed')) {
-                        fngValue.style.color = '#00ff00'; // green
+                        fngValue.style.color = 'var(--positive-color)'; // green
                     } else if (fngClass.includes('Neutral')) {
-                        fngValue.style.color = '#ffff00'; // yellow
+                        fngValue.style.color = 'var(--neutral-color)'; // yellow
                     }
 
                     marketCapValue.textContent = formatNumber(btcCap);
@@ -434,6 +530,51 @@
 
         updateSats(); // Initial load
         setInterval(updateSats, 60000); // Update every 60 seconds to avoid rate limits
+
+        document.querySelectorAll('.stat-item').forEach(item => {
+            item.addEventListener('click', () => {
+                let url = '';
+                switch (item.id) {
+                    case 'sats-per-usd': url = './sats-converter.html'; break;
+                    case 'btc-price': url = './btc-price.html'; break;
+                    case 'price-change': url = './price-changes.html'; break; // E.g., full historical table
+                    case 'block-info': url = './block-info.html'; break;
+                    case 'btc-dominance': url = './BWO.html'; break; // Link to Bitcoin White Paper
+                    case 'market-cap': url = './market-cap.html'; break;
+                }
+                if (url) window.open(url, '_blank'); // Opens in new tab
+            });
+        });
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        // Load saved theme or default to dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.src = 'sun.png'; // Sun for light mode
+        } else {
+            themeIcon.src = 'moon.png'; // Moon for dark mode
+        }
+
+        // Toggle on click
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeIcon.src = 'sun.png';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.src = 'moon.png';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        const helpButton = document.getElementById('help-button');
+        helpButton.addEventListener('click', () => {
+            window.open('./help.html', '_blank');
+        });
     </script>
 </body>
 </html>
