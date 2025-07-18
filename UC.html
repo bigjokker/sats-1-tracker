@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Construction</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #121212; /* Dark background to match widget theme */
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            position: relative;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff9900; /* Bitcoin orange */
+            text-align: center;
+            margin: 0;
+        }
+        .spinner-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .bitcoin-symbol {
+            font-size: 40px;
+            color: #ff9900;
+        }
+        .spin1 {
+            animation: spin-clockwise 2s linear infinite;
+        }
+        .spin2 {
+            animation: spin-counter 3s linear infinite;
+        }
+        .spin3 {
+            animation: spin-clockwise 4s linear infinite;
+        }
+        .spin4 {
+            animation: spin-counter 2.5s linear infinite;
+        }
+        .spin5 {
+            animation: spin-clockwise 3.5s linear infinite;
+        }
+        .spin6 {
+            animation: spin-counter 4s linear infinite;
+        }
+        .spin7 {
+            animation: spin-clockwise 2s linear infinite;
+        }
+        .spin8 {
+            animation: spin-counter 3s linear infinite;
+        }
+        .spin9 {
+            animation: spin-clockwise 4s linear infinite;
+        }
+        .spin10 {
+            animation: spin-counter 2.5s linear infinite;
+        }
+        @keyframes spin-clockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes spin-counter {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        .close-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 0;
+        }
+        .close-button:hover {
+            color: #ff9900;
+        }
+    </style>
+</head>
+<body>
+    <h1>UNDER CONSTRUCTION!</h1>
+    <div class="spinner-container">
+        <div class="bitcoin-symbol spin1">₿</div>
+        <div class="bitcoin-symbol spin2">₿</div>
+        <div class="bitcoin-symbol spin3">₿</div>
+        <div class="bitcoin-symbol spin4">₿</div>
+        <div class="bitcoin-symbol spin5">₿</div>
+        <div class="bitcoin-symbol spin6">₿</div>
+        <div class="bitcoin-symbol spin7">₿</div>
+        <div class="bitcoin-symbol spin8">₿</div>
+        <div class="bitcoin-symbol spin9">₿</div>
+        <div class="bitcoin-symbol spin10">₿</div>
+    </div>
+    <button class="close-button" onclick="window.close()">X</button>
+</body>
+</html>

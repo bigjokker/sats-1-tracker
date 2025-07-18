@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satoshi Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212; /* Dark default */
+            --text-color: #e0e0e0;
+            --widget-bg-start: #1e1e1e;
+            --widget-bg-end: #2a2a2a;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.05);
+            --label-color: #a0a0a0;
+            --subtitle-color: #a0a0a0;
+            --main-text-color: #ffffff;
+            --sub-text-color: #ffffff;
+            --positive-color: #00ff00;
+            --negative-color: #ff0000;
+            --neutral-color: #ffff00;
+            --hover-tint: rgba(255, 153, 0, 0.1);
+            --close-color: #ffffff; /* White for dark mode */
+        }
+
+        .light-mode {
+            --bg-color: #ffffff;
+            --text-color: #121212;
+            --widget-bg-start: #f0f0f0;
+            --widget-bg-end: #ffffff;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.1);
+            --label-color: #606060;
+            --subtitle-color: #606060;
+            --main-text-color: #ff9900;
+            --sub-text-color: #ff9900;
+            --positive-color: #008000;
+            --negative-color: #ff0000;
+            --neutral-color: #cccc00;
+            --hover-tint: rgba(255, 255, 0, 0.1);
+            --close-color: #000000; /* Black for light mode */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+        }
+
+        .converter-widget {
+            position: relative;
+            background: linear-gradient(135deg, var(--widget-bg-start), var(--widget-bg-end));
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 153, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .converter-widget:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 153, 0, 0.5);
+        }
+
+        .converter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--stat-bg);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .input-group img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            color: var(--label-color);
+            min-width: 100px;
+            text-align: left;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 8px;
+            font-size: 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        /* Hide up/down arrows on number inputs */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--subtitle-color);
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* Button styles - small, absolute position, no layout impact */
+        .theme-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            opacity: 1; /* Always fully visible */
+            z-index: 10; /* Ensures it's on top */
+        }
+
+        .theme-button:hover {
+            opacity: 0.8; /* Optional: Slight fade on hover for feedback, or remove this */
+        }
+
+        .theme-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .close-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            color: var(--close-color);
+            font-size: 24px;
+            line-height: 30px;
+            text-align: center;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .close-button:hover {
+            opacity: 0.8;
+        }
+
+        h2 {
+            color: #ff9900;
+            font-size: 28px; /* A little bigger */
+            text-decoration: underline;
+            margin: 0 0 20px 0; /* Increased bottom margin for more space between title and dollar box */
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-widget">
+        <h2>USD to Sat/BTC Converter</h2>
+        <div class="converter-form">
+            <div class="input-group">
+                <img src="dollar.png" alt="Dollar"> <!-- Replace with your dollar image path -->
+                <label for="usd-input">USD:</label>
+                <input type="number" id="usd-input" placeholder="Enter USD">
+            </div>
+            <div class="input-group">
+                <img src="lightning.png" alt="Lightning"> <!-- Replace with your lightning image path -->
+                <label for="sats-input">Satoshis:</label>
+                <input type="number" id="sats-input" placeholder="Enter Satoshis">
+            </div>
+            <div class="input-group">
+                <img src="bitcoin.png" alt="Bitcoin"> <!-- Replace with your bitcoin image path -->
+                <label for="btc-input">Bitcoin (BTC):</label>
+                <input type="number" id="btc-input" placeholder="Enter BTC">
+            </div>
+        </div>
+        <div class="subtitle">Live BTC price from CoinGecko API</div>
+        <button id="theme-toggle" class="theme-button">
+            <img id="theme-icon" src="moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
+        </button>
+        <button id="close-button" class="close-button">X</button>
+    </div>
+
+    <script>
+        const apiKey = ''; // Same as main widget
+        let btcPrice = 0; // Will fetch from API
+
+        const satsInput = document.getElementById('sats-input');
+        const btcInput = document.getElementById('btc-input');
+        const usdInput = document.getElementById('usd-input');
+
+        async function fetchBtcPrice() {
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&x_cg_demo_api_key=${apiKey}`);
+                const data = await response.json();
+                btcPrice = data.bitcoin.usd;
+            } catch (error) {
+                console.error('Error fetching BTC price:', error);
+                btcPrice = 0; // Fallback
+            }
+        }
+
+        function updateFromSats() {
+            const sats = parseFloat(satsInput.value) || 0;
+            const btc = sats / 100000000;
+            const usd = btc * btcPrice;
+            btcInput.value = btc.toFixed(8);
+            usdInput.value = usd.toFixed(2);
+        }
+
+        function updateFromBtc() {
+            const btc = parseFloat(btcInput.value) || 0;
+            const sats = btc * 100000000;
+            const usd = btc * btcPrice;
+            satsInput.value = sats.toFixed(0);
+            usdInput.value = usd.toFixed(2);
+        }
+
+        function updateFromUsd() {
+            const usd = parseFloat(usdInput.value) || 0;
+            const btc = usd / btcPrice;
+            const sats = btc * 100000000;
+            btcInput.value = btc.toFixed(8);
+            satsInput.value = sats.toFixed(0);
+        }
+
+        // Event listeners
+        satsInput.addEventListener('input', updateFromSats);
+        btcInput.addEventListener('input', updateFromBtc);
+        usdInput.addEventListener('input', updateFromUsd);
+
+        // Initial fetch
+        fetchBtcPrice().then(() => {
+            // Optional: Set default values or update
+        });
+
+        // Theme toggle (copied from main widget)
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.src = 'sun.png';
+        } else {
+            themeIcon.src = 'moon.png';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeIcon.src = 'sun.png';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.src = 'moon.png';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Close button
+        const closeButton = document.getElementById('close-button');
+        closeButton.addEventListener('click', () => {
+            window.close();
+        });
+    </script>
+</body>
+</html>
