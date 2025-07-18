@@ -40,16 +40,22 @@
             --hover-tint: rgba(255, 255, 0, 0.1);
         }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Changed from center to flex-start globally to pin */
-            min-height: 100vh;
+        html, body {
+            height: 100%; /* Fix height to screen size */
+                                    
+                                                                                            
+                              
             margin: 0;
+            overflow: hidden; /* Disable all scrolling */
             background-color: var(--bg-color);
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
-            padding-top: 40px; /* Added top padding for breathing room from screen edge */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .converter-widget {
@@ -64,7 +70,6 @@
             max-width: 400px;
             box-sizing: border-box; /* Ensures padding doesn't add to width */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            margin-top: 0; /* Ensures no extra top margin on widget */
         }
 
         .converter-widget:hover {
@@ -197,7 +202,7 @@
             }
             body {
                 align-items: flex-start; /* Prevent centering shift on keyboard open */
-                padding-top: 40px;
+                padding-top: 20px;
             }
         }
     </style>
