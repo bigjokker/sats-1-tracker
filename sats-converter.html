@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- Added to prevent zoom/scale issues on iOS -->
     <title>Satoshi Converter</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -40,22 +40,28 @@
             --hover-tint: rgba(255, 255, 0, 0.1);
         }
 
-        html, body {
-            height: 100%; /* Fix height to screen size */
-                                    
-                                                                                            
-                              
-            margin: 0;
-            overflow: hidden; /* Disable all scrolling */
-            background-color: var(--bg-color);
-            font-family: 'Inter', sans-serif;
-            color: var(--text-color);
+        html {
+            height: 100%; /* Lock html height */
+            overflow: hidden; /* Prevent scrolling at root */
         }
 
         body {
+            height: 100%; /* Lock body height to viewport */
+            overflow: hidden; /* Disable all scrolling */
+                                                                                            
+                              
+            margin: 0;
+                                                         
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+         
+
+              
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Align to top */
+            padding-top: 20px; /* Space from top */
         }
 
         .converter-widget {
@@ -198,11 +204,11 @@
                 gap: 5px;
             }
             .input-group label {
-                min-width: 90px; /* Change this number (e.g., 80px, 100px) to adjust alignment on mobile */
-            }
-            body {
-                align-items: flex-start; /* Prevent centering shift on keyboard open */
-                padding-top: 20px;
+                min-width: 90px; /* Align inputs on mobile; adjust this (e.g., 80px, 100px) */
+             
+                  
+                                                                                       
+                                  
             }
         }
     </style>
