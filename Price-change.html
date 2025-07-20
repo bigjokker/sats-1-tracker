@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Price Changes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212; /* Dark default */
+            --text-color: #e0e0e0;
+            --widget-bg-start: #1e1e1e;
+            --widget-bg-end: #2a2a2a;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.05);
+            --label-color: #a0a0a0;
+            --subtitle-color: #a0a0a0;
+            --main-text-color: #ffffff;
+            --sub-text-color: #ffffff;
+            --positive-color: #00ff00;
+            --negative-color: #ff0000;
+            --neutral-color: #ffff00;
+            --hover-tint: rgba(255, 153, 0, 0.1);
+        }
+
+        .light-mode {
+            --bg-color: #ffffff;
+            --text-color: #121212;
+            --widget-bg-start: #f0f0f0;
+            --widget-bg-end: #ffffff;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.1);
+            --label-color: #606060;
+            --subtitle-color: #606060;
+            --main-text-color: #ff9900;
+            --sub-text-color: #ff9900;
+            --positive-color: #008000;
+            --negative-color: #ff0000;
+            --neutral-color: #cccc00;
+            --hover-tint: rgba(255, 255, 0, 0.1);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+        }
+
+        .widget {
+            position: relative;
+            background: linear-gradient(135deg, var(--widget-bg-start), var(--widget-bg-end));
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 153, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .widget:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 153, 0, 0.5);
+        }
+
+        h2 {
+            color: #ff9900;
+            font-size: 20px;
+            text-decoration: underline;
+            margin: 0px 0 20px 0; /* Adjusted from previous request for top padding */
+        }
+
+        .changes-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .change-item {
+            background-color: var(--stat-bg);
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 14px;
+            color: var(--main-text-color);
+            animation: fadeIn 0.5s ease-in;
+            min-height: 50px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: background-color 0.2s ease;
+        }
+
+        /* Style the last three items (15y, AT, Future Change) */
+        .change-item:nth-last-child(-n+3) {
+            min-height: 50px; /* Increase height to accommodate larger numbers */
+        }
+
+        .change-item:nth-last-child(-n+3) .stat-main-value {
+            font-size: 12px; /* Slightly smaller font to help fit large numbers */
+            word-break: break-all; /* Break long numbers if needed */
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--label-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-main-value {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--subtitle-color);
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .theme-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .theme-button:hover {
+            opacity: 0.8;
+        }
+
+        .theme-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .close-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 30px;
+            text-align: center;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .close-button:hover {
+            opacity: 0.8;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .widget {
+                padding: 10px 10px 20px 10px;
+                max-width: 100%;
+            }
+            .changes-container {
+                grid-template-columns: repeat(2, 1fr); /* Adjust to 2 columns on mobile for less height */
+            }
+            .change-item:nth-last-child(-n+3) {
+                min-height: 50px; /* Reset height for mobile */
+            }
+            .change-item:nth-last-child(-n+3) .stat-main-value {
+                font-size: 12px; /* Adjust font for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="widget">
+        <h2>Bitcoin Price Changes</h2>
+        <div class="changes-container">
+            <div class="change-item">
+                <div class="stat-label">24h Change</div>
+                <div class="stat-main-value" id="chg-24h">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">1w Change</div>
+                <div class="stat-main-value" id="chg-1w">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">1m Change</div>
+                <div class="stat-main-value" id="chg-1m">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">6m Change</div>
+                <div class="stat-main-value" id="chg-6m">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">1y Change</div>
+                <div class="stat-main-value" id="chg-1y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">2y Change</div>
+                <div class="stat-main-value" id="chg-2y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">3y Change</div>
+                <div class="stat-main-value" id="chg-3y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">4y Change</div>
+                <div class="stat-main-value" id="chg-4y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">5y Change</div>
+                <div class="stat-main-value" id="chg-5y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">6y Change</div>
+                <div class="stat-main-value" id="chg-6y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">7y Change</div>
+                <div class="stat-main-value" id="chg-7y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">8y Change</div>
+                <div class="stat-main-value" id="chg-8y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">9y Change</div>
+                <div class="stat-main-value" id="chg-9y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">10y Change</div>
+                <div class="stat-main-value" id="chg-10y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">11y Change</div>
+                <div class="stat-main-value" id="chg-11y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">12y Change</div>
+                <div class="stat-main-value" id="chg-12y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">13y Change</div>
+                <div class="stat-main-value" id="chg-13y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">14y Change</div>
+                <div class="stat-main-value" id="chg-14y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">15y Change</div>
+                <div class="stat-main-value" id="chg-15y">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">All Time Change</div>
+                <div class="stat-main-value" id="chg-at">Loading...</div>
+            </div>
+            <div class="change-item">
+                <div class="stat-label">Future Change</div>
+                <div class="stat-main-value" id="chg-future">∞</div>
+            </div>
+        </div>
+        <div class="subtitle">Live update via CryptoCompare API</div>
+        <button id="theme-toggle" class="theme-button">
+            <img id="theme-icon" src="./Moon.png" alt="Toggle Theme">
+        </button>
+        <button class="close-button" onclick="window.close()">X</button>
+    </div>
+
+    <script>
+        function colorChange(element, value) {
+            element.style.color = value > 0 ? 'var(--positive-color)' : 'var(--negative-color)';
+        }
+
+        async function updateChanges() {
+            try {
+                // Fetch current price
+                const priceResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD');
+                if (!priceResponse.ok) throw new Error('Current price API request failed');
+                const priceData = await priceResponse.json();
+                const currentPrice = priceData.USD;
+
+                const periods = [
+                    { label: '24h', days: 1, id: 'chg-24h', round: false },
+                    { label: '1w', days: 7, id: 'chg-1w', round: false },
+                    { label: '1m', days: 30, id: 'chg-1m', round: false },
+                    { label: '6m', days: 180, id: 'chg-6m', round: false },
+                    { label: '1y', days: 365, id: 'chg-1y', round: false },
+                    { label: '2y', days: 730, id: 'chg-2y', round: false },
+                    { label: '3y', days: 1095, id: 'chg-3y', round: true },
+                    { label: '4y', days: 1460, id: 'chg-4y', round: true },
+                    { label: '5y', days: 1825, id: 'chg-5y', round: true },
+                    { label: '6y', days: 2190, id: 'chg-6y', round: true },
+                    { label: '7y', days: 2555, id: 'chg-7y', round: true },
+                    { label: '8y', days: 2920, id: 'chg-8y', round: true },
+                    { label: '9y', days: 3285, id: 'chg-9y', round: true },
+                    { label: '10y', days: 3650, id: 'chg-10y', round: true },
+                    { label: '11y', days: 4015, id: 'chg-11y', round: true },
+                    { label: '12y', days: 4380, id: 'chg-12y', round: true },
+                    { label: '13y', days: 4745, id: 'chg-13y', round: true },
+                    { label: '14y', days: 5110, id: 'chg-14y', round: true },
+                    { label: '15y', days: 5475, id: 'chg-15y', round: true },
+                    { label: 'AT', alltime: true, id: 'chg-at', round: true },
+                    { label: 'Future', id: 'chg-future', special: 'future' }
+                ];
+
+                // Fetch full historical daily data
+                const histResponse = await fetch('https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&allData=true');
+                if (!histResponse.ok) throw new Error('Historical API request failed');
+                const histData = await histResponse.json();
+                const prices = histData.Data.Data; // Array of {time: unix, close: price, ...}
+
+                function getPastUnix(days) {
+                    const past = new Date();
+                    past.setUTCDate(past.getDate() - days);
+                    past.setUTCHours(0, 0, 0, 0);
+                    return Math.floor(past.getTime() / 1000);
+                }
+
+                function findClosestPrice(prices, targetUnix) {
+                    if (!prices.length) return null;
+                    let closest = prices[0];
+                    let minDiff = Math.abs(prices[0].time - targetUnix);
+                    for (let entry of prices) {
+                        const diff = Math.abs(entry.time - targetUnix);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            closest = entry;
+                        }
+                    }
+                    return closest.close;
+                }
+
+                periods.forEach(p => {
+                    const el = document.getElementById(p.id);
+                    if (p.special === 'future') {
+                        el.textContent = '∞%';
+                        el.style.color = 'var(--positive-color)';
+                    } else {
+                        let pastPrice;
+                        if (p.alltime) {
+                            pastPrice = prices.length ? prices[0].close : null;
+                        } else {
+                            const pastUnix = getPastUnix(p.days);
+                            pastPrice = findClosestPrice(prices, pastUnix);
+                        }
+                        if (pastPrice === null || pastPrice === 0) {
+                            el.textContent = '∞%';
+                            el.style.color = 'var(--positive-color)';
+                        } else {
+                            const chgVal = ((currentPrice - pastPrice) / pastPrice) * 100;
+                            el.textContent = p.round ? `${Math.round(chgVal)}%` : `${chgVal.toFixed(1)}%`;
+                            colorChange(el, chgVal);
+                        }
+                    }
+                });
+
+                // Trigger fade-in
+                document.querySelectorAll('.change-item').forEach(item => {
+                    item.style.animation = 'none';
+                    item.offsetHeight;
+                    item.style.animation = 'fadeIn 0.5s ease-in';
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.querySelectorAll('.stat-main-value').forEach(el => el.textContent = 'Error');
+            }
+        }
+
+        updateChanges();
+        setInterval(updateChanges, 60000);
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.src = './Sun.png';
+        } else {
+            themeIcon.src = './Moon.png';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeIcon.src = './Sun.png';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.src = './Moon.png';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
