@@ -362,7 +362,7 @@
         </div>
         <div class="subtitle">Live update via CoinGecko & Mempool APIs</div>
         <button id="theme-toggle" class="theme-button">
-            <img id="theme-icon" src="./moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
+            <img id="theme-icon" src="./Moon.png" alt="Toggle Theme"> <!-- Starts as dark (moon) -->
         </button>
         <button id="help-button" class="help-button">
             <img src="help.png" alt="Help">
@@ -536,11 +536,11 @@
                 let url = '';
                 switch (item.id) {
                     case 'sats-per-usd': url = './sats-converter.html'; break;
-                    case 'btc-price': url = './btc-price.html'; break;
-                    case 'price-change': url = './price-changes.html'; break; // E.g., full historical table
-                    case 'block-info': url = './block-info.html'; break;
+                    case 'btc-price': url = './UC.html'; break;
+                    case 'price-change': url = './UC.html'; break;
+                    case 'block-info': url = 'https://mempool.space/'; break; // Link to Mempool.space
                     case 'btc-dominance': url = './BWO.html'; break; // Link to Bitcoin White Paper
-                    case 'market-cap': url = './market-cap.html'; break;
+                    case 'market-cap': url = './UC.html'; break;
                 }
                 if (url) window.open(url, '_blank'); // Opens in new tab
             });
@@ -573,7 +573,7 @@
 
         const helpButton = document.getElementById('help-button');
         helpButton.addEventListener('click', () => {
-            window.open('./help.html', '_blank');
+            window.open('./UC.html', '_blank');
         });
     </script>
 </body>
