@@ -1,61 +1,85 @@
-Satoshi’s per $1 - Live Tracker
+# Bitcoin Stats Widget
 
-A sleek, real-time Bitcoin stats widget built with HTML, CSS, and JavaScript. Displays Sats per $1, BTC price, market data, and more, updating live via APIs. Designed for mobile-first viewing and easy embedding or hosting on GitHub Pages.
-Features
+A sleek, real-time Bitcoin statistics widget built with HTML, CSS, and JavaScript. Displays key BTC metrics like price, sats per USD, market cap, dominance, and more, with interactive features and a responsive design. Updated every 60 seconds using CoinGecko and Mempool APIs.
 
-    Live Updates: Fetches data every 60 seconds (configurable) from CoinGecko, Mempool.space, and Alternative.me APIs.
-    Key Stats:
-        Sats per $1 (with all-time low).
-        BTC Price (with all-time high).
-        Price Changes (24h, 6m, 1y).
-        Current Block, Hash Rate, and Halving Estimate.
-        BTC Dominance and Fear & Greed Index.
-        Market Cap, 24h Volume, and Circulating Supply.
-    Visuals: Dark mode theme with Bitcoin orange accents, pulsing animations, and a subtle glow effect on hover.
-    Responsive: Optimized for mobile (max-width 400px) but scales well on desktop.
-    Custom Elements: Spinning Bitcoin logos in the Dominance box for flair.
-    No Dependencies: Pure vanilla JS; no frameworks needed.
+## Features
 
-Demo
+- **Real-Time Stats**:
+  - Sats per $1 (current and all-time low, pulsing animation).
+  - BTC Price (current and all-time high, pulsing animation).
+  - Price Changes (24h, 6m, 1y percentages, color-coded green/red).
+  - Block Info (current block, hash rate, halving estimate).
+  - BTC Dominance & Fear/Greed Index (with spinning ₿ logos).
+  - Market Cap, 24h Volume, and Circulating Supply.
 
-View a live demo here https://bigjokker.github.io/sats-1-tracker/
+- **Interactive Elements**:
+  - Clickable stat boxes: Link to converters, external sites (e.g., CoinMarketCap, Mempool, Wikipedia), or internal pages (e.g., detailed price changes, Bitcoin White Paper).
+  - Theme Toggle: Dark/light mode switch (bottom-left Moon/Sun icon), saved in local storage.
+  - Help Button: Bottom-right question mark opens help page with explanations.
 
-Installation & Usage
+- **Animations & Effects**:
+  - Pulsing on key values (Sats per $1, BTC Price).
+  - Fade-in on data updates.
+  - Spinning ₿ logos in Dominance box.
+  - Hover lift and glow on the widget.
 
-    Clone the Repo
-    
-    git clone https://github.com/bigjokker/sats-1-tracker.git
-    cd sats-1-tracker
-    Customize:
-        Open index.html in a text editor (e.g., Notepad++).
-        Add your CoinGecko API key (free tier available) to const apiKey = ''; in the <script> section to avoid rate limits.
-        Update meta tags (e.g., og:image, og:url) with your repo details.
-    Test Locally:
-        Open index.html in a browser.
-        Data should load automatically (internet required).
-    Deploy to GitHub Pages:
-        Push to your repo's main branch.
-        Go to repo Settings > Pages > Set source to main branch and root folder.
-        Access at https://yourusername.github.io/sats-1-tracker/.
-    Embed Elsewhere:
-        Copy the HTML code and paste into your site, or use an iframe: <iframe src="https://yourusername.github.io/sats-1-tracker/" width="400" height="600"></iframe>.
+- **Connected Pages**:
+  - Sats Converter: USD/Sats/BTC calculator.
+  - Price Change: Detailed % changes over multiple timeframes (24h to all-time, with Future Change as ∞%).
+  - Help Page: Feature summaries and explanations.
 
-APIs Used
+- **Responsive Design**: Optimized for mobile and desktop; adjusts layout on smaller screens.
+- **Data Sources**: CoinGecko (prices/market data), Mempool (blocks/hash rate), Alternative.me (Fear & Greed).
+- **No External Dependencies**: Pure vanilla JS/CSS; fonts from Google Fonts.
 
-    CoinGecko: For BTC price, market data, dominance.
-    Mempool.space: For block height and hash rate.
-    Alternative.me: For Fear & Greed Index.
+## Setup and Installation
 
-Note: Free APIs may have rate limits. Sign up for a CoinGecko API key for better reliability.
-Configuration
+1. **Clone the Repository**:
+   ```
+   git clone https://github.com/bigjokker/sats-1-tracker.git
+   cd sats-1-tracker
+   ```
 
-    Update Interval: Change setInterval(updateSats, 30000); to a higher value (e.g., 60000 for 1 minute) to reduce API calls.
-    Styles: Tweak CSS in the <style> block (e.g., colors, fonts, grid columns).
-    All-Time Low Persistence: Uses localStorage to track the lowest Sats per $1 seen.
+2. **API Key (Optional)**:
+   - The code uses a CoinGecko API key (set to empty by default). For higher rate limits, get a free key from [CoinGecko API](https://www.coingecko.com/en/api) and replace `const apiKey = '';` in the script.
 
-Contributing
+3. **Assets**:
+   - Ensure images like `Moon.png`, `Sun.png`, `help.png`, and `Sats-tracker.png` are in the root directory.
+   - Add `apple-touch-icon.png` for iOS home screen icon.
 
-Fork the repo, make changes, and submit a pull request. Suggestions for new stats or improvements welcome!
-License
+4. **Local Viewing**:
+   - Open `index.html` in a browser.
 
-MIT License - Feel free to use, modify, and distribute. See LICENSE for details.
+## Usage
+
+- Open the widget in a browser (or via GitHub Pages: [https://bigjokker.github.io/sats-1-tracker/](https://bigjokker.github.io/sats-1-tracker/)).
+- Stats auto-update every 60 seconds.
+- Click stats for more details/links.
+- Toggle theme with the bottom-left icon.
+- Access help via bottom-right icon.
+
+For mobile: Add to home screen for app-like experience (uses `apple-touch-icon.png`).
+
+## Data and APIs
+
+- **CoinGecko**: Prices, market cap, dominance, historical data.
+- **Mempool**: Block height, hash rate.
+- **Alternative.me**: Fear & Greed Index.
+- Updates handle errors gracefully (shows "Error" if fetch fails).
+
+Note: All-time low Sats per $1 is calculated from CoinGecko's ATH price for global consistency.
+
+## Contributing
+
+Contributions welcome! Fork the repo, make changes, and submit a pull request. Focus areas:
+- Bug fixes (e.g., API handling).
+- New stats or animations.
+- Improved mobile responsiveness.
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+Built by bigjokker. #Bitcoin #StackingSats
