@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Bitcoin Stats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212; /* Dark default */
+            --text-color: #e0e0e0;
+            --widget-bg-start: #1e1e1e;
+            --widget-bg-end: #2a2a2a;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.05);
+            --label-color: #a0a0a0;
+            --subtitle-color: #a0a0a0;
+            --main-text-color: #ffffff;
+            --sub-text-color: #ffffff;
+            --positive-color: #00ff00;
+            --negative-color: #ff0000;
+            --neutral-color: #ffff00;
+            --hover-tint: rgba(255, 153, 0, 0.1);
+        }
+
+        .light-mode {
+            --bg-color: #ffffff;
+            --text-color: #121212;
+            --widget-bg-start: #f0f0f0;
+            --widget-bg-end: #ffffff;
+            --border-color: #ff9900;
+            --stat-bg: rgba(255, 153, 0, 0.1);
+            --label-color: #606060;
+            --subtitle-color: #606060;
+            --main-text-color: #ff9900;
+            --sub-text-color: #ff9900;
+            --positive-color: #008000;
+            --negative-color: #ff0000;
+            --neutral-color: #cccc00;
+            --hover-tint: rgba(255, 255, 0, 0.1);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+        }
+
+        .widget {
+            position: relative;
+            background: linear-gradient(135deg, var(--widget-bg-start), var(--widget-bg-end));
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 153, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .widget:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 153, 0, 0.5);
+        }
+
+        h2 {
+            color: #ff9900;
+            font-size: 28px;
+            text-decoration: underline;
+            margin: 30px 0 20px 0; /* Adjusted for top padding */
+        }
+
+        .help-section {
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .help-section h3 {
+            color: #ff9900;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .help-section ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0 0 15px 0;
+        }
+
+        .help-section li {
+            margin-bottom: 8px;
+        }
+
+        .theme-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .theme-button:hover {
+            opacity: 0.8;
+        }
+
+        .theme-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .close-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 30px;
+            text-align: center;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .close-button:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 480px) {
+            .widget {
+                padding: 10px 10px 20px 10px;
+                max-width: 100%;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .help-section {
+                font-size: 12px;
+            }
+            .help-section h3 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="widget">
+        <h2>Help - Bitcoin Stats</h2>
+        <div class="help-section">
+            <h3>Overview</h3>
+            <p>This widget provides real-time Bitcoin statistics, updated every 60 seconds using CoinGecko and Mempool APIs. It features a dark/light theme toggle and clickable stats that link to additional resources.</p>
+
+            <h3>Key Stats Explained</h3>
+            <ul>
+                <li><strong>Sats per $1</strong>: Number of satoshis (smallest Bitcoin unit) per USD. Shows current value (pulsing orange) and all-time low (green). <strong>Click to open USD to Sats/BTC Converter</strong>.</li>
+                <li><strong>BTC Price</strong>: Current Bitcoin price in USD (pulsing orange) and all-time high (green). <strong>Click for CoinMarketCap Bitcoin page</strong>.</li>
+                <li><strong>Price Changes</strong>: Percentage changes over 24h, 6 months, and 1 year (green for positive, red for negative). <strong>Click to open detailed Price Change page with more timeframes (24h to all-time)</strong>.</li>
+                <li><strong>Block Info</strong>: Current block number, hash rate (EH/s), and estimated next halving date. <strong>Click for Mempool.space explorer</strong>.</li>
+                <li><strong>BTC Dominance & Fear/Greed</strong>: Bitcoin's market dominance (%) and Fear & Greed Index (red for fear, green for greed, yellow for neutral). <strong>Click for Bitcoin White Paper (Optimized for seamless mobile viewing)</strong>.</li>
+                <li><strong>Market Cap & Volume</strong>: Bitcoin market cap (formatted as $T/B/M), 24h trading volume, and circulating supply out of 21M. <strong>Click for Bitcoin Wikipedia page</strong>.</li>
+            </ul>
+
+            <h3>Interactive Features</h3>
+            <ul>
+                <li><strong>Clickable Stats</strong>: Tap/click any stat box to open related pages or external links (opens in new tab).</li>
+                <li><strong>Theme Toggle</strong>: Moon/Sun icon (bottom-left) switches between dark and light modes. Preference saved locally.</li>
+                <li><strong>Help Button</strong>: Question mark icon (bottom-right) opens this help page.</li>
+                <li><strong>Animations</strong>: Pulsing on key values (e.g., Sats per $1, BTC Price), fade-in on updates, spinning ₿ logos in Dominance box.</li>
+            </ul>
+
+            <h3>Data Sources & Notes</h3>
+            <ul>
+                <li>Data from CoinGecko (prices, market data) and Mempool (block info, hash rate).</li>
+                <li>All-time low Sats per $1 tracked locally in browser storage.</li>
+                <li>Updates every 60 seconds; "Loading..." or "Error" if fetch fails.</li>
+                <li>Responsive design for mobile/desktop; hover effects on desktop.</li>
+            </ul>
+        </div>
+        <button id="theme-toggle" class="theme-button">
+            <img id="theme-icon" src="./Moon.png" alt="Toggle Theme">
+        </button>
+        <button class="close-button" onclick="window.close()">X</button>
+    </div>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.src = './Sun.png';
+        } else {
+            themeIcon.src = './Moon.png';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeIcon.src = './Sun.png';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.src = './Moon.png';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
