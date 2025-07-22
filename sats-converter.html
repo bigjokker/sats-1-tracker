@@ -40,29 +40,41 @@
             --hover-tint: rgba(255, 255, 0, 0.1);
         }
 
-        html {
-            height: 100%; /* Changed per suggestion */
-        }
-
-        body {
-            width: 100%;
-            min-height: 100vh; /* Changed to min-height per suggestion */
+        html, body {
+                          
+                                    
+                                
+                              
             margin: 0;
             padding: 0;
+            width: 100%;
+            min-height: 100vh;
             background-color: var(--bg-color);
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
+        }
+
+        body {
             display: flex;
             justify-content: center;
             align-items: flex-start;
             padding-top: 20px;
+            overflow-y: auto; /* ← Let body scroll when keyboard pushes viewport */
+            -webkit-overflow-scrolling: touch; /* ← Smooth scrolling on iOS */
         }
 
-        .scroll-wrapper { /* Added optional wrapper per suggestion */
-            width: 100%;
+        .viewport-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
             display: flex;
             justify-content: center;
-            padding: 20px 0;
+            align-items: flex-start;
+            padding-top: 20px;
+            background-color: var(--bg-color);
         }
 
         .converter-widget {
@@ -207,11 +219,15 @@
             .input-group label {
                 min-width: 90px; /* Align inputs on mobile; adjust this (e.g., 80px, 100px) */
             }
+                  
+                                                                                       
+                                  
+             
         }
     </style>
 </head>
 <body>
-    <div class="scroll-wrapper">
+    <div class="viewport-wrapper">
         <div class="converter-widget">
             <h2>USD to Sat/BTC Converter</h2>
             <div class="converter-form">
@@ -237,6 +253,11 @@
             </button>
             <button class="close-button" onclick="window.close()">X</button>
         </div>
+                                                                     
+                                                       
+                                                                                                    
+                 
+                                                                        
     </div>
 
     <script>
@@ -314,6 +335,28 @@
                 themeIcon.src = './Moon.png';
                 localStorage.setItem('theme', 'dark');
             }
+        });
+
+        // Prevent scroll on focus (iOS workaround)
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                // Lock body scroll
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${window.scrollY}px`;
+
+                // Optional: center input if needed
+                setTimeout(() => {
+                    input.scrollIntoView({ block: 'center', behavior: 'instant' });
+                }, 300);
+            });
+
+            input.addEventListener('blur', () => {
+                // Restore scroll
+                const scrollY = document.body.style.top;
+                document.body.style.position = '';
+                document.body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            });
         });
     </script>
 </body>
